@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet
         }
         else
         {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("/login.jsp");
         }
     }
 
@@ -35,20 +35,17 @@ public class LoginServlet extends HttpServlet
             throws ServletException, IOException
     {
         HttpSession session = request.getSession();
-        String login = (String) session.getAttribute("login");
-        String password = (String) request.getAttribute("password");
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
 
-        if (login != null && password != null)
-        {
+        if (login != null && password != null) {
             Users usersInstance = Users.getInstance();
             List<String> usersList = usersInstance.getUsers();
-            if (usersList.contains(login))
-            {
+            if (usersList.contains(login)) {
                 session.setAttribute("user", login);
                 response.sendRedirect("/user/hello.jsp");
             }
-            else
-            {
+            else {
                 request.getRequestDispatcher("/login.jsp")
                         .forward(request, response);
             }

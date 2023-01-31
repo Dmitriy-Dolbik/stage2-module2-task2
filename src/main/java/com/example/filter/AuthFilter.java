@@ -14,31 +14,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @WebFilter(urlPatterns = "/user/*")
-public class AuthFilter implements Filter
-{
+public class AuthFilter implements Filter {
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException
-    {
+    public void init(final FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
     }
-
     @Override
-    public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException
-    {
+    public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         HttpSession session = httpServletRequest.getSession(false);
 
         if(session == null || session.getAttribute("user") == null) {
-            httpServletRequest.getRequestDispatcher("/login.jsp")
-                    .forward(httpServletRequest, httpServletResponse);
+            httpServletResponse.sendRedirect("/login.jsp");
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
-
     @Override
-    public void destroy()
-    {
+    public void destroy() {
         Filter.super.destroy();
     }
 }
