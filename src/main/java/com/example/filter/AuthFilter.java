@@ -20,7 +20,7 @@ public class AuthFilter implements Filter
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException
     {
-        //Filter.super.init(filterConfig);
+        Filter.super.init(filterConfig);
     }
 
     @Override
