@@ -13,8 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 @WebFilter(urlPatterns = "/user/*")
 public class AuthFilter implements Filter {
+    private static final Logger logger = LogManager.getLogger(AuthFilter.class);
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
@@ -24,10 +29,12 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         HttpSession session = httpServletRequest.getSession(false);
-
+        logger.info("Enter in doFilter method().");
         if(session == null || session.getAttribute("user") == null) {
+            logger.info("User is not authenticated, redirecting to login page.");
             httpServletResponse.sendRedirect("/login.jsp");
         } else {
+            logger.info("User is authenticated.");
             filterChain.doFilter(servletRequest, servletResponse);
         }
     }
