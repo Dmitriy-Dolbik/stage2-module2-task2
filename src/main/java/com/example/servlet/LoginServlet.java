@@ -22,11 +22,11 @@ public class LoginServlet extends HttpServlet
         HttpSession session = request.getSession();
         if (session.getAttribute("user") != null)
         {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("/user/hello.jsp");
         }
         else
         {
-            response.sendRedirect("/user/hello.jsp");
+            response.sendRedirect("login.jsp");
         }
     }
 
